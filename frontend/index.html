@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EchoLearn · 英语跟读录音</title>
+  <link rel="stylesheet" href="/src/style.css" />
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="logo">EL</div>
+        <div>
+          <h1>EchoLearn</h1>
+          <p>英语跟读 · 录音对比</p>
+        </div>
+      </div>
+
+      <div class="filters" id="filters"></div>
+
+      <div class="list-label">
+        <span>练习句子</span>
+        <span id="sentenceCount" class="muted"></span>
+      </div>
+      <div class="sentence-list" id="sentenceList"></div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div class="cat-chip" id="catChip">B1 · 日常口语</div>
+        <div class="topbar-actions">
+          <button class="ghost" id="btnDeleteSentence" hidden>删除此句</button>
+          <button class="ghost" id="btnImport">导入材料</button>
+          <button class="ghost" id="btnFolder" title="在资源管理器中打开数据目录">录音文件夹</button>
+        </div>
+      </header>
+
+      <section class="practice">
+        <div class="sentence-block">
+          <p class="label">英文原文</p>
+          <div class="sentence" id="sentenceEn"></div>
+          <div class="translation" id="sentenceZh"></div>
+        </div>
+
+        <div class="controls">
+          <button class="btn primary" id="btnRef">
+            <span class="ico">♪</span> 听原音
+          </button>
+
+          <div class="speed" id="speedGroup">
+            <span>语速</span>
+            <button class="speed-btn" data-rate="0.7">0.7×</button>
+            <button class="speed-btn active" data-rate="0.85">0.85×</button>
+            <button class="speed-btn" data-rate="1">1.0×</button>
+          </div>
+
+          <div class="spacer"></div>
+
+          <button class="btn record" id="btnRecord">
+            <span class="dot"></span> 开始录音
+          </button>
+          <button class="btn" id="btnStop" disabled>停止</button>
+          <button class="btn" id="btnMine" disabled>
+            <span class="ico">▶</span> 听我的
+          </button>
+          <button class="btn accent" id="btnAB" disabled>AB 对比</button>
+        </div>
+
+        <div class="wave-card">
+          <canvas id="wave"></canvas>
+          <div class="wave-meta">
+            <span class="timer" id="timer">00:00.0</span>
+            <span class="hint" id="hint">选择句子后点击「听原音」，再点击「开始录音」跟读</span>
+          </div>
+        </div>
+
+        <div class="compare-card" id="compareCard">
+          <div class="compare-head">
+            <span class="label">对照文本</span>
+            <span class="muted" id="compareMeta">—</span>
+          </div>
+          <div class="compare-text" id="compareText">跟读时，这里会同步显示原文，方便你逐词核对发音。</div>
+          <div class="compare-actions" id="compareActions"></div>
+        </div>
+      </section>
+
+      <section class="records">
+        <div class="records-head">
+          <h2>我的录音 <span id="recordCount" class="muted"></span></h2>
+        </div>
+        <div id="recordList" class="record-list">
+          <div class="empty">还没有录音，先跟读一句试试。</div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div class="modal-mask" id="importModal" hidden>
+    <div class="modal">
+      <div class="modal-head">
+        <h3>导入阅读材料</h3>
+        <button class="icon-btn" id="btnCloseImport" title="关闭">✕</button>
+      </div>
+      <p class="modal-desc">选择 .txt / .md / .json 文件，或直接把材料粘贴到下面。</p>
+
+      <div class="modal-row">
+        <input id="importTitle" type="text" placeholder="材料名称（可选，默认用文件名）" />
+        <button class="btn primary" id="btnPickFile">选择文件…</button>
+      </div>
+
+      <textarea id="importText" spellcheck="false" placeholder="每行一句英文材料，例如：&#10;Could you say that again?|你能再说一遍吗？&#10;I'll be there in five minutes.|我五分钟后到。"></textarea>
+
+      <div class="format-hint">
+        <div>· 每行一句，自动去重，重复内容会被跳过</div>
+        <div>· 中英对照用 | 或 Tab 分隔（也可以只写英文）</div>
+        <div>· 以 # 开头的行作为分组标题</div>
+        <div>· JSON 支持 [{"text":"...","translation":"..."}] 格式</div>
+      </div>
+
+      <div class="modal-actions">
+        <button class="btn" id="btnCancelImport">取消</button>
+        <button class="btn accent" id="btnDoImport">导入文本</button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>
